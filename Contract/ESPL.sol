@@ -13,7 +13,6 @@ contract ESPLARENA is ERC20, AccessControl {
     
     mapping(address => uint256) private _balances; 
     uint256 private _totalSupply;
-    uint256 private MAXSUP;
     uint256 constant MAXIMUMSUPPLY=1000000000*10**18;
 
     constructor() ERC20("ESPL ARENA", "ARENA") {
@@ -22,9 +21,8 @@ contract ESPLARENA is ERC20, AccessControl {
     }
 
     function mint(address to, uint256 amount) public onlyRole(MINTER_ROLE) {
-        require((MAXSUP+amount)<=MAXIMUMSUPPLY,"Maximum supply has been reached");
+        require((_totalSupply+amount)<=MAXIMUMSUPPLY,"Maximum supply has been reached");
         _totalSupply = _totalSupply.add(amount);
-        MAXSUP=MAXSUP.add(amount);
         _balances[to] = _balances[to].add(amount);
         _mint(to, amount);
     }
